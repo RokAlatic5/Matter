@@ -49,9 +49,12 @@ public class main extends ListenerAdapter {
             }
             if (msg.getContentRaw().startsWith("!psn")) {
                 psn.userPsn(event);
-                if (msg.getContentRaw().startsWith("!userinfo")) {
+            }
+            if (msg.getContentRaw().startsWith("!userinfo")) {
                     userInfo.userInformation(event);
-                }
+            }
+            if (msg.getContentRaw().startsWith("!warn")) {
+                warn.warnUser(event);
             }
         }
     }
