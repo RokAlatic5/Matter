@@ -1,16 +1,13 @@
 
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.awt.*;
-import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.List;
 import java.lang.String;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class userInfo {
@@ -20,215 +17,8 @@ public class userInfo {
     static void userInformation(MessageReceivedEvent event) {
         MessageChannel channel = event.getChannel();
         EmbedBuilder embed = new EmbedBuilder();
+        Member author = null;
         Guild guild = event.getGuild();
-        Member author = new Member() {
-            @Nonnull
-            @Override
-            public User getUser() {
-                return null;
-            }
-
-            @Nonnull
-            @Override
-            public Guild getGuild() {
-                return null;
-            }
-
-            @Nonnull
-            @Override
-            public JDA getJDA() {
-                return null;
-            }
-
-            @Nonnull
-            @Override
-            public OffsetDateTime getTimeJoined() {
-                return null;
-            }
-
-            @Override
-            public boolean hasTimeJoined() {
-                return false;
-            }
-
-            @Nullable
-            @Override
-            public OffsetDateTime getTimeBoosted() {
-                return null;
-            }
-
-            @Override
-            public boolean isBoosting() {
-                return false;
-            }
-
-            @Nullable
-            @Override
-            public OffsetDateTime getTimeOutEnd() {
-                return null;
-            }
-
-            @Nullable
-            @Override
-            public GuildVoiceState getVoiceState() {
-                return null;
-            }
-
-            @Nonnull
-            @Override
-            public List<Activity> getActivities() {
-                return null;
-            }
-
-            @Nonnull
-            @Override
-            public OnlineStatus getOnlineStatus() {
-                return null;
-            }
-
-            @Nonnull
-            @Override
-            public OnlineStatus getOnlineStatus(@Nonnull ClientType clientType) {
-                return null;
-            }
-
-            @Nonnull
-            @Override
-            public EnumSet<ClientType> getActiveClients() {
-                return null;
-            }
-
-            @Nullable
-            @Override
-            public String getNickname() {
-                return null;
-            }
-
-            @Nonnull
-            @Override
-            public String getEffectiveName() {
-                return null;
-            }
-
-            @Nullable
-            @Override
-            public String getAvatarId() {
-                return null;
-            }
-
-            @Nonnull
-            @Override
-            public List<Role> getRoles() {
-                return null;
-            }
-
-            @Nullable
-            @Override
-            public Color getColor() {
-                return null;
-            }
-
-            @Override
-            public int getColorRaw() {
-                return 0;
-            }
-
-            @Override
-            public boolean canInteract(@Nonnull Member member) {
-                return false;
-            }
-
-            @Override
-            public boolean canInteract(@Nonnull Role role) {
-                return false;
-            }
-
-            @Override
-            public boolean canInteract(@Nonnull Emote emote) {
-                return false;
-            }
-
-            @Override
-            public boolean isOwner() {
-                return false;
-            }
-
-            @Override
-            public boolean isPending() {
-                return false;
-            }
-
-            @Nullable
-            @Override
-            public BaseGuildMessageChannel getDefaultChannel() {
-                return null;
-            }
-
-            @Nonnull
-            @Override
-            public String getAsMention() {
-                return null;
-            }
-
-            @Nonnull
-            @Override
-            public EnumSet<Permission> getPermissions() {
-                return null;
-            }
-
-            @Nonnull
-            @Override
-            public EnumSet<Permission> getPermissions(@Nonnull GuildChannel guildChannel) {
-                return null;
-            }
-
-            @Nonnull
-            @Override
-            public EnumSet<Permission> getPermissionsExplicit() {
-                return null;
-            }
-
-            @Nonnull
-            @Override
-            public EnumSet<Permission> getPermissionsExplicit(@Nonnull GuildChannel guildChannel) {
-                return null;
-            }
-
-            @Override
-            public boolean hasPermission(@Nonnull Permission... permissions) {
-                return false;
-            }
-
-            @Override
-            public boolean hasPermission(@Nonnull Collection<Permission> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean hasPermission(@Nonnull GuildChannel guildChannel, @Nonnull Permission... permissions) {
-                return false;
-            }
-
-            @Override
-            public boolean hasPermission(@Nonnull GuildChannel guildChannel, @Nonnull Collection<Permission> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean canSync(@Nonnull IPermissionContainer iPermissionContainer, @Nonnull IPermissionContainer iPermissionContainer1) {
-                return false;
-            }
-
-            @Override
-            public boolean canSync(@Nonnull IPermissionContainer iPermissionContainer) {
-                return false;
-            }
-
-            @Override
-            public long getIdLong() {
-                return 0;
-            }
-        };
         int msgLenght = event.getMessage().getContentDisplay().split(" ").length;
         if (msgLenght <= 1) {
             author = event.getMember();
@@ -244,17 +34,21 @@ public class userInfo {
                 channel.sendMessage("Member not found!").queue();
             }
         }
-        for (Activity activity : author.getActivities()) {
-            acticityName = activity.getName();
-            try {
-                if (activity.asRichPresence().getLargeImage().getUrl() != null) {
-                    activityPresenceImage = activity.asRichPresence().getLargeImage().getUrl();
-                } if (activity.asRichPresence().getDetails() != null) {
-                    activityPresenceDetails = activity.asRichPresence().getDetails();
+        try {
+            for (Activity activity : Objects.requireNonNull(author).getActivities()) {
+                acticityName = activity.getName();
+                try {
+                    if (activity.asRichPresence().getLargeImage().getUrl() != null) {
+                        activityPresenceImage = activity.asRichPresence().getLargeImage().getUrl();
+                    } if (activity.asRichPresence().getDetails() != null) {
+                        activityPresenceDetails = activity.asRichPresence().getDetails();
+                    }
+                } catch (NullPointerException nullerr) {
+                    System.out.println(nullerr);
                 }
-            } catch (NullPointerException nullerr) {
-                System.out.println(nullerr);
             }
+        } catch (NullPointerException nerr) {
+            System.out.println(nerr);
         }
         embed.setTitle(author.getUser().getName() + "#" + author.getUser().getDiscriminator());
         embed.addField("ID", author.getId(), false);
