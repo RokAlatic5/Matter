@@ -73,6 +73,7 @@ public class warn {
                 member = guild.retrieveMemberById(UserID).complete();
             }
         }
+
             try (Connection connection = DriverManager.getConnection(hidden.url, hidden.username, hidden.password)) {
 
                 Statement statement = connection.createStatement();
@@ -83,32 +84,28 @@ public class warn {
                 while (rs.next()) {
                     warns = rs.getInt("Warns");
                 }
+
+                int warnsCount = warns + 1;
+
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.setTitle("You've been warned");
+                embed.addField("Reason", warnReason, false);
+                embed.addField("Moderator", executor, false);
+                embed.addField("Punishment ID", Appeal+ " | You can appeal this warning with /appeal "+ Appeal, false);
+                embed.setFooter(guild.getName()+ " • Warning "+ warnsCount +"/3");
+                embed.setTimestamp(Instant.now()).build();
+                embed.setColor(Color.decode("#FFD700"));
+
                 if (warns == 0) {
                     String addWarn1 = "INSERT INTO Warn (Warns, UserID, Warn1, Appeal1, Guild, Executor)" +
                             "VALUES ('1', '"+ UserID +"', '"+warnReason+"', '"+ Appeal +"', '"+ guild.getId() +"', '"+ executor +"');";
                     statement.executeUpdate(addWarn1);
-                    EmbedBuilder embed = new EmbedBuilder();
-                    embed.setTitle("You've been warned");
-                    embed.addField("Reason", warnReason, false);
-                    embed.addField("Moderator", executor, false);
-                    embed.addField("Punishment ID", Appeal+ " | You can appeal this warning with /appeal "+ Appeal, false);
-                    embed.setFooter(guild.getName()+ " • Warning 1/3");
-                    embed.setTimestamp(Instant.now()).build();
-                    embed.setColor(Color.decode("#FFD700"));
                     member.getUser().openPrivateChannel().complete().sendMessageEmbeds(embed.build()).queue();
                 }
                 if (warns == 1) {
                     String addWarn2 = "UPDATE Warn "+
                             "SET Warns = '2', Warn2= '"+warnReason+"', Appeal2= '"+Appeal+"', Executor1= '"+executor+"' "+
                             "WHERE UserID="+ UserID+" AND Guild='"+guild.getId()+"';";
-                    EmbedBuilder embed = new EmbedBuilder();
-                    embed.setTitle("You've been warned");
-                    embed.addField("Reason", warnReason, false);
-                    embed.addField("Moderator", executor, false);
-                    embed.addField("Punishment ID", Appeal+ " | You can appeal this warning with /appeal "+ Appeal, false);
-                    embed.setFooter(guild.getName()+ " • Warning 2/3");
-                    embed.setTimestamp(Instant.now()).build();
-                    embed.setColor(Color.decode("#FFD700"));
                     member.getUser().openPrivateChannel().complete().sendMessageEmbeds(embed.build()).queue();
 
                     statement.executeUpdate(addWarn2);
@@ -117,15 +114,6 @@ public class warn {
                     String addWarn3 = "UPDATE Warn "+
                             "SET Warns = '3', Warn3= '"+warnReason+"', Appeal3= '"+Appeal+"', Executor2= '"+executor+"' "+
                             "WHERE UserID="+ UserID+" AND Guild='"+guild.getId()+"';";
-
-                    EmbedBuilder embed = new EmbedBuilder();
-                    embed.setTitle("You've been warned");
-                    embed.addField("Reason", warnReason, false);
-                    embed.addField("Moderator", executor, false);
-                    embed.addField("Punishment ID", Appeal+ " | You can appeal this warning with /appeal "+ Appeal, false);
-                    embed.setFooter(guild.getName()+ " • Warning 3/3");
-                    embed.setTimestamp(Instant.now()).build();
-                    embed.setColor(Color.decode("#FFD700"));
                     member.getUser().openPrivateChannel().complete().sendMessageEmbeds(embed.build()).queue();
 
                     statement.executeUpdate(addWarn3);
@@ -135,7 +123,6 @@ public class warn {
 
             } catch (Exception err) {
                 System.out.println(err);
-                channel.sendMessage(err.toString()).queue();
             }
     }
 }
