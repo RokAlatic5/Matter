@@ -4,20 +4,15 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.security.auth.login.LoginException;
-import java.awt.*;
 import java.sql.*;
-import java.time.OffsetDateTime;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashMap;
 import java.lang.String;
-import java.util.List;
 
 public class main extends ListenerAdapter {
+
+
     public static void main(String[] args)
             throws LoginException {
         JDA jda = JDABuilder.createDefault(hidden.token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES)
@@ -38,11 +33,11 @@ public class main extends ListenerAdapter {
     }
 
     @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
+    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         Message msg = event.getMessage();
         MessageChannel channel = event.getChannel();
-        Guild guild = event.getGuild();
-        if (event.getAuthor().isBot() == false) {
+        Member member = event.getMember();
+        if (!event.getAuthor().isBot()) {
 
             if (msg.getContentRaw().startsWith("!setpsn")) {
                 setpsn.setUserPsn(event);
@@ -55,6 +50,9 @@ public class main extends ListenerAdapter {
             }
             if (msg.getContentRaw().startsWith("!warn")) {
                 warn.warnUser(event);
+            }
+            if (msg.getContentRaw().startsWith("!appeal")) {
+                appeal.appeal(event);
             }
         }
     }
