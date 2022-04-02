@@ -96,17 +96,25 @@ public class warn {
                 embed.setTimestamp(Instant.now()).build();
                 embed.setColor(Color.decode("#FFD700"));
 
+                EmbedBuilder cembed = new EmbedBuilder();
+                cembed.setDescription(member.getUser().getName() + "has been warned.");
+                cembed.setColor(Color.decode("#FFD700"));
+
+
                 if (warns == 0) {
                     String addWarn1 = "INSERT INTO Warn (Warns, UserID, Warn1, Appeal1, Guild, Executor)" +
                             "VALUES ('1', '"+ UserID +"', '"+warnReason+"', '"+ Appeal +"', '"+ guild.getId() +"', '"+ executor +"');";
                     statement.executeUpdate(addWarn1);
                     member.getUser().openPrivateChannel().complete().sendMessageEmbeds(embed.build()).queue();
+                    channel.sendMessageEmbeds(cembed.build()).queue();
+
                 }
                 if (warns == 1) {
                     String addWarn2 = "UPDATE Warn "+
                             "SET Warns = '2', Warn2= '"+warnReason+"', Appeal2= '"+Appeal+"', Executor1= '"+executor+"' "+
                             "WHERE UserID="+ UserID+" AND Guild='"+guild.getId()+"';";
                     member.getUser().openPrivateChannel().complete().sendMessageEmbeds(embed.build()).queue();
+                    channel.sendMessageEmbeds(cembed.build()).queue();
 
                     statement.executeUpdate(addWarn2);
                 }
@@ -115,6 +123,7 @@ public class warn {
                             "SET Warns = '3', Warn3= '"+warnReason+"', Appeal3= '"+Appeal+"', Executor2= '"+executor+"' "+
                             "WHERE UserID="+ UserID+" AND Guild='"+guild.getId()+"';";
                     member.getUser().openPrivateChannel().complete().sendMessageEmbeds(embed.build()).queue();
+                    channel.sendMessageEmbeds(cembed.build()).queue();
 
                     statement.executeUpdate(addWarn3);
                 }
