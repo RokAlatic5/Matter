@@ -1,4 +1,6 @@
 
+import com.jagrosh.jdautilities.command.Command;
+import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.Member;
@@ -10,11 +12,19 @@ import java.lang.String;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class userInfo {
+public class userInfo extends Command {
+
+    public userInfo() {
+        this.name = "userinfo";
+        this.help = "get user info from provided user";
+        this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
+        this.guildOnly = true;
+    }
+
     static String acticityName;
     static String activityPresenceImage;
     static String activityPresenceDetails;
-    static void userInformation(MessageReceivedEvent event) {
+    protected void execute(CommandEvent event) {
         MessageChannel channel = event.getChannel();
         EmbedBuilder embed = new EmbedBuilder();
         Member author = null;

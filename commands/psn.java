@@ -1,23 +1,23 @@
+import com.jagrosh.jdautilities.command.Command;
+import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.internal.entities.MemberImpl;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.sql.*;
-import java.time.OffsetDateTime;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.List;
 
-public class psn {
-    static void userPsn(MessageReceivedEvent event){
+public class psn extends Command{
+
+    public psn() {
+        this.name = "psn";
+        this.help = "shows users psn";
+        this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
+        this.guildOnly = true;
+    }
+
+    @Override
+    protected void execute(CommandEvent event) {
         String UserID = "";
         String mentionedUser = "";
         MessageChannel channel = event.getChannel();
@@ -26,7 +26,7 @@ public class psn {
         Member member = null;
         try {
             mentionedUser = event.getMessage().getMentionedMembers().get(0).getId();
-        } catch (IndexOutOfBoundsException err) {System.out.println(err);}
+        } catch (IndexOutOfBoundsException err) {}
         int msgLenght = event.getMessage().getContentDisplay().split(" ").length;
 
         if (msgLenght <= 1) {
@@ -41,7 +41,7 @@ public class psn {
         }
 
 
-        try (Connection connection = DriverManager.getConnection(hidden.url, hidden.username, hidden.password)) {
+        try (Connection connection = DriverManager.getConnection(main.url, main.username, main.password)) {
 
             Statement statement = connection.createStatement();
 

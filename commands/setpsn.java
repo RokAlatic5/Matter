@@ -1,10 +1,19 @@
+import com.jagrosh.jdautilities.command.Command;
+import com.jagrosh.jdautilities.command.CommandEvent;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.sql.*;
 
-public class setpsn {
-    static void setUserPsn(MessageReceivedEvent event) {
+public class setpsn extends Command {
+
+    public setpsn() {
+        this.name = "setpsn";
+        this.help = "Sets a psn";
+        this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
+        this.guildOnly = true;
+    }
+    protected void execute(CommandEvent event) {
         MessageChannel channel = event.getChannel();
         int msgLenght = event.getMessage().getContentDisplay().split(" ").length;
 
@@ -25,7 +34,7 @@ public class setpsn {
                     "WHERE UserID = " + UserID + ";";
 
 
-            try (Connection connection = DriverManager.getConnection(hidden.url, hidden.username, hidden.password)) {
+            try (Connection connection = DriverManager.getConnection(main.url, main.username, main.password)) {
 
                 Statement statement = connection.createStatement();
 

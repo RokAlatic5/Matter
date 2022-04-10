@@ -1,4 +1,7 @@
+import com.jagrosh.jdautilities.command.Command;
+import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import java.awt.*;
@@ -7,10 +10,18 @@ import java.time.Instant;
 import java.util.*;
 
 
-public class warn {
+public class warn extends Command{
+
+    public warn() {
+        this.name = "warn";
+        this.help = "Warns a user";
+        this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS, Permission.KICK_MEMBERS};
+        this.guildOnly = true;
+    }
+
     static int warns;
     static String Appeal;
-    static void warnUser(MessageReceivedEvent event) {
+    protected void execute(CommandEvent event) {
         String UserID = event.getMember().getId();
         Member member = null;
         String message[] = event.getMessage().getContentDisplay().split(" ");
@@ -74,7 +85,7 @@ public class warn {
             }
         }
 
-            try (Connection connection = DriverManager.getConnection(hidden.url, hidden.username, hidden.password)) {
+            try (Connection connection = DriverManager.getConnection(main.url, main.username, main.password)) {
 
                 Statement statement = connection.createStatement();
 
