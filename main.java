@@ -30,7 +30,7 @@ public class main {
 
     public static void main(String[] args)
             throws LoginException, IOException, RateLimitedException {
-        Ini config = new Ini( new File("C:/Users/Home/Desktop/MatterBot/config.ini"));
+        Ini config = new Ini( new File("path/to/config.ini"));
 
         token = config.get("botStuff", "botToken");
         owner = config.get("botStuff", "botOwner");
