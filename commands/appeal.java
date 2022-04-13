@@ -21,21 +21,21 @@ public class appeal extends Command implements net.dv8tion.jda.api.hooks.EventLi
 
     appeal(EventWaiter waiter) {
         this.name = "appeal";
-        this.help = "Appeals for a punishement";
+        this.help = "Appeals for a punishment";
         this.botPermissions = new Permission[]{};
         this.guildOnly = false;
         this.waiter = waiter;
     }
 
     private String AppealReason;
-    private static String Warn;
-    private static String Punisher;
-    private static String AppealID;
-    private static String UserID;
-    private static String GuildId;
+    private String Warn;
+    private String Punisher;
+    private String AppealID;
+    private String UserID;
+    private String GuildId;
 
-    private static String buttonID;
-    private static Button accept;
+    private String buttonID;
+    private Button accept;
 
 
     private void waitForReason(CommandEvent event) {
