@@ -175,11 +175,11 @@ public class appeal extends Command implements net.dv8tion.jda.api.hooks.EventLi
     public void onEvent(@NotNull GenericEvent event) {
         if (event instanceof ButtonInteractionEvent) {
             if (((ButtonInteractionEvent) event).getComponentId().equals("reject")) {
-                ((ButtonInteractionEvent) event).reply("Appeal Declined.");
+                ((ButtonInteractionEvent) event).reply("Rejected").queue();
             }
             else {
                 buttonID = ((ButtonInteractionEvent) event).getComponentId();
-                ((ButtonInteractionEvent) event).reply("Appeal accepted.");
+                ((ButtonInteractionEvent) event).reply("Appeal accepted.").queue();
                 try {
                     Connection connection = DriverManager.getConnection(main.url, main.username, main.password);
 
@@ -207,22 +207,24 @@ public class appeal extends Command implements net.dv8tion.jda.api.hooks.EventLi
 
                     if (Appeal1.equals(args[0])) {
                         System.out.println("This is Warning 1");
-                        String updatePSN = "UPDATE Warn " +
-                                "SET Warn1 = 'None', " +
-                                "SET Appeal1 = 'None'," +
-                                "SET Executor"
-                                "WHERE UserID='"+args[1]+"' AND Guild='"+args[2]+"'";
+                        String removeWarn1 = "UPDATE Warn SET Warns='"+ Warns +"', Warn1='None', Appeal1='None', Executor='None' WHERE UserID="+ UserID +" AND Guild="+ GuildId +";";
+                        statement.executeUpdate(removeWarn1);
                     } else if (Appeal2.equals(args[0])) {
                         System.out.println("This is Warning 2");
-                        ((ButtonInteractionEvent) event).reply("This is warning number 2");
+                        String removeWarn2 = "UPDATE Warn SET Warns='"+ Warns +"', Warn2='None', Appeal2='None', Executor1='None' WHERE UserID="+ UserID +" AND Guild="+ GuildId +";";
+                        statement.executeUpdate(removeWarn2);
                     } else if (Appeal3.equals(args[0])) {
                         System.out.println("This is Warning 3");
-                        ((ButtonInteractionEvent) event).reply("This is warning number 3");
+                        String removeWarn3 = "UPDATE Warn SET Warns='"+ Warns +"', Warn3='None', Appeal3='None', Executor2='None' WHERE UserID="+ UserID +" AND Guild="+ GuildId +";";
+                        statement.executeUpdate(removeWarn3);
                     }
+
+                    connection.close();
 
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                ((ButtonInteractionEvent) event).getMessage().delete().queue();
 
             }
         }
