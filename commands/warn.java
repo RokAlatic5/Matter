@@ -21,6 +21,9 @@ public class warn extends Command{
 
     static int warns;
     static String Appeal;
+    static String Appeal1;
+    static String Appeal2;
+    static String Appeal3;
     protected void execute(CommandEvent event) {
         String UserID = event.getMember().getId();
         Member member = null;
@@ -89,11 +92,12 @@ public class warn extends Command{
 
                 Statement statement = connection.createStatement();
 
-                String checkForUser = "SELECT Warns FROM Warn " +
+                String checkForUser = "SELECT Warns, Appeal1, Appeal2, Appeal3 FROM Warn " +
                         "WHERE UserID="+ UserID+" AND Guild='"+guild.getId()+"';";
                 ResultSet rs = statement.executeQuery(checkForUser);
                 while (rs.next()) {
                     warns = rs.getInt("Warns");
+             
                 }
 
                 int warnsCount = warns + 1;
