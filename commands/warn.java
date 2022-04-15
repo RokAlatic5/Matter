@@ -97,7 +97,9 @@ public class warn extends Command{
                 ResultSet rs = statement.executeQuery(checkForUser);
                 while (rs.next()) {
                     warns = rs.getInt("Warns");
-             
+                    Appeal1 = rs.getStrint("Appeal1");
+                    Appeal2 = rs.getString("Appeal2");
+                    Appeal3 = rs.getString("Appeal3");
                 }
 
                 int warnsCount = warns + 1;
@@ -116,7 +118,7 @@ public class warn extends Command{
                 cembed.setColor(Color.decode("#FFD700"));
 
 
-                if (warns == 0) {
+                if (warns == 0 || !Appeal3.equals("None")) {
                     String addWarn1 = "INSERT INTO Warn (Warns, UserID, Warn1, Appeal1, Guild, Executor)" +
                             "VALUES ('1', '"+ UserID +"', '"+warnReason+"', '"+ Appeal +"', '"+ guild.getId() +"', '"+ executor +"');";
                     statement.executeUpdate(addWarn1);
@@ -124,7 +126,7 @@ public class warn extends Command{
                     channel.sendMessageEmbeds(cembed.build()).queue();
 
                 }
-                if (warns == 1) {
+                if (warns == 1 || !Appeal2.equals("None")) {
                     String addWarn2 = "UPDATE Warn "+
                             "SET Warns = '2', Warn2= '"+warnReason+"', Appeal2= '"+Appeal+"', Executor1= '"+executor+"' "+
                             "WHERE UserID="+ UserID+" AND Guild='"+guild.getId()+"';";
@@ -133,7 +135,7 @@ public class warn extends Command{
 
                     statement.executeUpdate(addWarn2);
                 }
-                if (warns == 2) {
+                if (warns == 2 || !Appeal3.equals("None")) {
                     String addWarn3 = "UPDATE Warn "+
                             "SET Warns = '3', Warn3= '"+warnReason+"', Appeal3= '"+Appeal+"', Executor2= '"+executor+"' "+
                             "WHERE UserID="+ UserID+" AND Guild='"+guild.getId()+"';";
